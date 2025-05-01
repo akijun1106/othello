@@ -28,25 +28,34 @@ export default function Home() {
       [-1, 0],
       [-1, -1],
     ];
+
+    if (y > 0 && board[y - 1][x] === 3 - turnColor) {
+      // 上方向は安全に参照できる
+    }
+
+    for (const [dx, dy] of directions) {
+      if (board[y + dy]?.[x + dx] === 3 - turnColor) {
+        newBoard[y][x] = turnColor;
+        setTurnColor(3 - turnColor);
+        break;
+      }
+    }
     if (board[y + 1] !== undefined && board[y + 1][x] === 3 - turnColor) {
       newBoard[y][x] = turnColor;
       setTurnColor(3 - turnColor);
-      }
     }
-    if (board[x + 1] !== undefined && board[y][x + 1] === 3 - turnColor) {
+    if (board[y][x + 1] === 3 - turnColor) {
       newBoard[y][x] = turnColor;
       setTurnColor(3 - turnColor);
     }
-    if (board[x - 1] !== undefined && board[y][x - 1] === 3 - turnColor) {
+    if (board[y][x - 1] === 3 - turnColor) {
       newBoard[y][x] = turnColor;
       setTurnColor(3 - turnColor);
     }
-
     if (board[y - 1] !== undefined && board[y - 1][x] === 3 - turnColor) {
       newBoard[y][x] = turnColor;
       setTurnColor(3 - turnColor);
     }
-
     setBoard(newBoard);
   };
   return (
