@@ -35,6 +35,8 @@ export default function Home() {
       const toFlip: [number, number][] = [];
       let nx = x + dx;
       let ny = y + dy;
+      //letは変数を定義するもの
+      //constも同じだがletとは違い再定義ができない
 
       // まず相手の石が続く限り収集
       while (newBoard[ny]?.[nx] === 3 - turnColor) {
