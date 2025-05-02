@@ -39,6 +39,7 @@ export default function Home() {
       //constも同じだがletとは違い再定義ができない
 
       // まず相手の石が続く限り収集
+      //whileの意味はtrueの間だけ繰り返す
       while (newBoard[ny]?.[nx] === 3 - turnColor) {
         toFlip.push([nx, ny]);
         nx += dx;
