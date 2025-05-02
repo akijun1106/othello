@@ -29,6 +29,7 @@ export default function Home() {
       [-1, 0],
       [-1, -1],
     ];
+    //flippedany=falseで初期化
     let flippedAny = false;
 
     for (const [dx, dy] of directions) {
@@ -55,6 +56,8 @@ export default function Home() {
     }
 
     // 一方向でも返せていれば合法手とみなす
+    //flippedany=falseで初期化
+    //八方向にチェックを入れて挟めていたらflippedany=trueとする
     if (flippedAny) {
       // 自分の石をクリックマスに置く
       newBoard[y][x] = turnColor;
