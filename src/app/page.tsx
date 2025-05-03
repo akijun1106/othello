@@ -92,6 +92,7 @@ export default function Home() {
                 <div
                   className={styles.stone}
                   style={{ background: color === 1 ? '#000' : '#fff' }}
+                  {...(board[x][y] === 0 && flippedany === false && <div className={styles.dot} />)}
                 />
               )}
             </div>
