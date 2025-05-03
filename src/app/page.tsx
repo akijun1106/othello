@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import styles from './page.module.css';
 
 export default function Home() {
@@ -15,7 +15,13 @@ export default function Home() {
     [0, 0, 0, 0, 0, 0, 0, 0],
     [0, 0, 0, 0, 0, 0, 0, 0],
   ]);
+  const legalMoves = useMemo((): [number, number][] => {
+    const moves: [number, number][] = [];
+    // ← ここで board, turnColor から合法手を moves に push
+    return moves;
+  }, [board, turnColor]);
   const clickHandler = (x: number, y: number) => {
+    if (!legalMoves.some(([lx, ly]) => lx === x && ly === y)) return;
     if (board[y][x] !== 0) return;
     console.log(x, y);
     const newBoard = structuredClone(board);
@@ -86,17 +92,26 @@ export default function Home() {
     <div className={styles.container}>
       <div className={styles.board}>
         {board.map((row, y) =>
-          row.map((color, x) => (
-            <div className={styles.cell} key={`${x}-${y}`} onClick={() => clickHandler(x, y)}>
-              {color !== 0 && (
-                <div
-                  className={styles.stone}
-                  style={{ background: color === 1 ? '#000' : '#fff' }}
-                  {...(board[x][y] === 0 && flippedany === false && <div className={styles.dot} />)}
-                />
-              )}
-            </div>
-          )),
+          row.map((color, x) => {
+            const isLegal = legalMoves.some(([lx, ly]) => lx === x && ly === y);
+            return (
+              <div
+                key={`${x}-${y}`}
+                className={`${styles.cell} ${isLegal ? styles.legal : ''}`}
+                onClick={() => clickHandler(x, y)}
+              >
+                {color !== 0 ? (
+                  <div
+                    className={styles.stone}
+                    style={{ background: color === 1 ? '#000' : '#fff' }}
+                  />
+                ) : (
+                  // 空きマスかつ合法手なら dot を出す
+                  isLegal && <div className={styles.dot} />
+                )}
+              </div>
+            );
+          }),
         )}
       </div>
     </div>
