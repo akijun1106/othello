@@ -20,6 +20,7 @@ export default function Home() {
     // ← ここで board, turnColor から合法手を moves に push
     return moves;
   }, [board, turnColor]);
+
   const clickHandler = (x: number, y: number) => {
     if (!legalMoves.some(([lx, ly]) => lx === x && ly === y)) return;
     if (board[y][x] !== 0) return;
