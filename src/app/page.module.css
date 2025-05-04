@@ -8,6 +8,25 @@
   padding: 0 0.5rem;
 }
 
+.turnIndicator {
+  display: flex;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.turnStone {
+  width: 16px;
+  height: 16px;
+  margin-right: 8px;
+  border: 1px solid #000;
+  border-radius: 50%;
+}
+
+.turnText {
+  font-size: 1.2rem;
+  font-weight: bold;
+}
+
 .board {
   display: flex;
   flex-wrap: wrap;

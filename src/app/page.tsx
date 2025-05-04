@@ -40,7 +40,7 @@ export default function Home() {
       let ny = y + dy;
 
       // 相手の石が続く限り収集
-      while (newBoard[ny]?.[nx] === 3 - turnColor) {
+      while (newBoard[ny]?.[nx] === 2 / turnColor) {
         toFlip.push([nx, ny]);
         nx += dx;
         ny += dy;
@@ -59,7 +59,7 @@ export default function Home() {
     if (flippedAny) {
       newBoard[y][x] = turnColor;
       setBoard(newBoard);
-      setTurnColor((3 - turnColor) as 1 | 2);
+      setTurnColor((2 / turnColor) as 1 | 2);
     }
   }; // clickHandler 終了
 
