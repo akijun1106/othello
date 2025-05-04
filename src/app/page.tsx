@@ -16,74 +16,58 @@ export default function Home() {
   ]);
 
   const clickHandler = (x: number, y: number) => {
-    // 空きマスでなければ何もしない
     if (board[y][x] !== 0) return;
     const newBoard = structuredClone(board);
-
-    // 8方向ベクトル
-    const directions = [
-      [0, -1],
-      [1, -1],
+    const dirs = [
       [1, 0],
       [1, 1],
       [0, 1],
       [-1, 1],
       [-1, 0],
       [-1, -1],
+      [0, -1],
+      [1, -1],
     ];
+    let flipped = false;
 
-    let flippedAny = false;
-
-    for (const [dx, dy] of directions) {
+    for (const [dx, dy] of dirs) {
       const toFlip: [number, number][] = [];
-      let nx = x + dx;
-      let ny = y + dy;
-
-      // 相手の石が続く限り収集
-      while (newBoard[ny]?.[nx] === 2 / turnColor) {
+      let nx = x + dx,
+        ny = y + dy;
+      // 相手の石を集める
+      while (newBoard[ny]?.[nx] === 3 - turnColor) {
         toFlip.push([nx, ny]);
         nx += dx;
         ny += dy;
       }
-
-      // 最後に自分の石で挟めていたらひっくり返す
+      // 自分の石でサンドできていれば裏返す
       if (toFlip.length > 0 && newBoard[ny]?.[nx] === turnColor) {
         toFlip.forEach(([fx, fy]) => {
           newBoard[fy][fx] = turnColor;
         });
-        flippedAny = true;
+        flipped = true;
       }
     }
 
-    // ひとつでもひっくり返せていれば合法手
-    if (flippedAny) {
-      newBoard[y][x] = turnColor;
-      setBoard(newBoard);
-      setTurnColor((2 / turnColor) as 1 | 2);
-    }
-  }; // clickHandler 終了
+    if (!flipped) return;
+
+    newBoard[y][x] = turnColor;
+    setBoard(newBoard);
+    // 関数更新で 1 ⇄ 2 を切り替え
+    setTurnColor((prev) => (prev === 1 ? 2 : 1));
+  };
 
   return (
     <div className={styles.container}>
-      <div className={styles.turnIndicator}>
-        <span
-          className={styles.turnStone}
-          style={{
-            background: turnColor === 1 ? '#000' : '#fff',
-            borderColor: turnColor === 1 ? '#000' : '#000',
-          }}
-        />
-        <span className={styles.turnText}>{turnColor === 1 ? '黒' : '白'}の番</span>
-      </div>
+      {/* シンプルにテキスト表示 */}
+      <p style={{ fontSize: 18, fontWeight: 'bold' }}>{turnColor === 1 ? '黒の番' : '白の番'}</p>
+
       <div className={styles.board}>
         {board.map((row, y) =>
-          row.map((color, x) => (
-            <div className={styles.cell} key={`${x}-${y}`} onClick={() => clickHandler(x, y)}>
-              {color !== 0 && (
-                <div
-                  className={styles.stone}
-                  style={{ background: color === 1 ? '#000' : '#fff' }}
-                />
+          row.map((c, x) => (
+            <div key={`${x}-${y}`} className={styles.cell} onClick={() => clickHandler(x, y)}>
+              {c !== 0 && (
+                <div className={styles.stone} style={{ background: c === 1 ? '#000' : '#fff' }} />
               )}
             </div>
           )),
