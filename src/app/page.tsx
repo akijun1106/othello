@@ -65,6 +65,16 @@ export default function Home() {
 
   return (
     <div className={styles.container}>
+      <div className={styles.turnIndicator}>
+        <span
+          className={styles.turnStone}
+          style={{
+            background: turnColor === 1 ? '#000' : '#fff',
+            borderColor: turnColor === 1 ? '#000' : '#000',
+          }}
+        />
+        <span className={styles.turnText}>{turnColor === 1 ? '黒' : '白'}の番</span>
+      </div>
       <div className={styles.board}>
         {board.map((row, y) =>
           row.map((color, x) => (
