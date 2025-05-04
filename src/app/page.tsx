@@ -18,9 +18,6 @@ export default function Home() {
   const clickHandler = (x: number, y: number) => {
     // 空きマスでなければ何もしない
     if (board[y][x] !== 0) return;
-
-    const me = turnColor; // 自分の色
-    const opp = 3 - turnColor; // 相手の色
     const newBoard = structuredClone(board);
 
     // 8方向ベクトル
@@ -43,16 +40,16 @@ export default function Home() {
       let ny = y + dy;
 
       // 相手の石が続く限り収集
-      while (newBoard[ny]?.[nx] === opp) {
+      while (newBoard[ny]?.[nx] === 3 - turnColor) {
         toFlip.push([nx, ny]);
         nx += dx;
         ny += dy;
       }
 
       // 最後に自分の石で挟めていたらひっくり返す
-      if (toFlip.length > 0 && newBoard[ny]?.[nx] === me) {
+      if (toFlip.length > 0 && newBoard[ny]?.[nx] === turnColor) {
         toFlip.forEach(([fx, fy]) => {
-          newBoard[fy][fx] = me;
+          newBoard[fy][fx] = turnColor;
         });
         flippedAny = true;
       }
@@ -60,9 +57,9 @@ export default function Home() {
 
     // ひとつでもひっくり返せていれば合法手
     if (flippedAny) {
-      newBoard[y][x] = me;
+      newBoard[y][x] = turnColor;
       setBoard(newBoard);
-      setTurnColor(opp);
+      setTurnColor((3 - turnColor) as 1 | 2);
     }
   }; // clickHandler 終了
 
